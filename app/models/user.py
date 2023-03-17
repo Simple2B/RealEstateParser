@@ -16,7 +16,7 @@ def gen_password_reset_id() -> str:
 
 class User(db.Model, UserMixin, ModelMixin):
 
-    __tablename__ = "users"
+    __tablename__ = "clients"
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(60), unique=True, nullable=False)

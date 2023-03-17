@@ -12,6 +12,20 @@ def get_context():
 
 
 @app.cli.command()
+def create_admin():
+    """Creates an admin user."""
+    from config import BaseConfig as cfg
+
+    models.User(
+        username=cfg.ADMIN_NAME,
+        password=cfg.ADMIN_PASS,
+        email=cfg.ADMIN_EMAIL,
+    ).save()
+
+    print("Admin user has been created!")
+
+
+@app.cli.command()
 def example_command():
     """Create the configured database."""
     print("Hello World!!!")

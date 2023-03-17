@@ -22,6 +22,9 @@ class BaseConfig(object):
     MAIL_USERNAME = os.getenv("MAIL_USERNAME", "!setup in .env!")
     MAIL_PASSWORD = os.getenv("MAIL_PASSWORD", "!setup in .env!")
     MAIL_DEFAULT_SENDER = os.getenv("MAIL_DEFAULT_SENDER", "!setup in .env!")
+    ADMIN_NAME = os.getenv("ADMIN_NAME", "admin")
+    ADMIN_PASS = os.getenv("ADMIN_NAME", "admin")
+    ADMIN_EMAIL = os.getenv("ADMIN_NAME", "admin@simple2b.net")
 
     @staticmethod
     def configure(app):
