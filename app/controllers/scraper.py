@@ -1,5 +1,3 @@
-# flake8: noqa F501
-import time
 from celery import Celery
 from config import BaseConfig as conf
 from app.logger import log
