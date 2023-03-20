@@ -17,8 +17,7 @@ def scrape(query: str):
 
     links = []
 
-    # chrome_options = Options()
-    chrome_options = webdriver.ChromeOptions()
+    chrome_options = webdriver.FirefoxOptions()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
@@ -27,14 +26,16 @@ def scrape(query: str):
     user_agent = UserAgent()
     user_agent.random
     chrome_options.add_argument(f"user-agent={user_agent}")
-    browser = webdriver.Chrome(
-        executable_path="app/controllers/selenium/webdriver/chromedriver",
+    browser = webdriver.Firefox(
+        executable_path="app/controllers/selenium/webdriver/geckodriver",
         options=chrome_options,
     )
-    browser.maximize_window()
+    log(log.INFO, "UserAgent: [%s]", user_agent)
 
     try:
+        log(log.INFO, "try")
         browser.get(query)
+        log(log.INFO, "browser.get(query): [%s]", query)
 
         pages_counter = 0
         while True:
@@ -58,7 +59,7 @@ def scrape(query: str):
                 ):
 
                     filename = (
-                        "sierra_file_"
+                        "app/controllers/selenium/csv/sierra_file_"
                         + str(random.randint(1000, 9999))
                         + "_"
                         + str(random.randint(1000, 9999))
@@ -101,7 +102,7 @@ def scrape(query: str):
 
             pages_counter += 1
             next_button = browser.find_element(By.ID, "pnnext")
-            if pages_counter == 2 or not next_button:
+            if pages_counter == 3 or not next_button:
                 break
             next_button.click()
         print(links)
