@@ -1,5 +1,4 @@
 import time
-from celery import Celery
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from fake_useragent import UserAgent
@@ -11,6 +10,8 @@ from app.logger import log
 
 
 def scrape(query: str):
+    log(log.INFO, "run controllers.scrape()")
+    log(log.INFO, "query: [%s]", conf.SEARH_QUERY)
     REAL_ESTATE_TEXT = "Real Estate Websites by"
     SIERRA_TEXT = "Sierra Interactive"
 
@@ -23,19 +24,14 @@ def scrape(query: str):
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("disable-infobars")
     chrome_options.add_argument("--disable-extensions")
-    # user_agent = UserAgent()
-    # user_agent.random
-    # chrome_options.add_argument(f"user-agent={user_agent}")
-    # chrome_options.add_argument(
-    #     "user-agent=Mozilla/5.0 (Windows Phone 10.0; Android 4.2.1; Microsoft; Lumia 640 XL LTE) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Mobile Safari/537.36 Edge/12.10166"
-    # )
-    # chrome_options.add_argument('--user-agent="Mozilla/5.0 (Windows Phone 10.0; Android 4.2.1; Microsoft; Lumia 640 XL LTE) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Mobile Safari/537.36 Edge/12.10166"')
-    # chrome_options.add_experimental_option("detach", True)
+    user_agent = UserAgent()
+    user_agent.random
+    chrome_options.add_argument(f"user-agent={user_agent}")
     browser = webdriver.Chrome(
         executable_path="app/controllers/selenium/webdriver/chromedriver",
         options=chrome_options,
     )
-    # browser.maximize_window()
+    browser.maximize_window()
 
     try:
         browser.get(query)
