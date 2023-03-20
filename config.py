@@ -26,6 +26,7 @@ class BaseConfig(object):
     ADMIN_PASS = os.getenv("ADMIN_NAME", "admin")
     ADMIN_EMAIL = os.getenv("ADMIN_NAME", "admin@simple2b.net")
     REDIS_URL = os.getenv("REDIS_URL", "")
+    SEARH_QUERY = os.getenv("SEARH_QUERY", "")
 
     @staticmethod
     def configure(app):

@@ -18,6 +18,11 @@ celery.conf.result_backend = conf.REDIS_URL
 
 
 @celery.task
+def testing_celery_task(query):
+    print(f"Testing Celery Task: {query}")
+
+
+@celery.task
 def scrape_sites(query):
     REAL_ESTATE_TEXT = "Real Estate Websites by"
     SIERRA_TEXT = "Sierra Interactive"
@@ -28,12 +33,13 @@ def scrape_sites(query):
     chrome_options = webdriver.ChromeOptions()
     user_agent = UserAgent()
     user_agent.random
-    # chrome_options.add_argument(f"user-agent={user_agent}")
+    chrome_options.add_argument(f"user-agent={user_agent}")
     # chrome_options.add_argument(
     #     "user-agent=Mozilla/5.0 (Windows Phone 10.0; Android 4.2.1; Microsoft; Lumia 640 XL LTE) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Mobile Safari/537.36 Edge/12.10166"
     # )
     # chrome_options.add_argument('--user-agent="Mozilla/5.0 (Windows Phone 10.0; Android 4.2.1; Microsoft; Lumia 640 XL LTE) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Mobile Safari/537.36 Edge/12.10166"')
     # chrome_options.add_experimental_option("detach", True)
+    chrome_options.add_argument("--headless")
     browser = webdriver.Chrome(
         executable_path="/home/denys/RealEstate/chromedriver/chromedriver.exr",
         options=chrome_options,

@@ -8,12 +8,19 @@
         <div class="w-1/2">
           <h1 class="text-5xl font-medium mb-6">Search Real Estate Sites</h1>
           <p class="text-xl mb-12">
-            Query: Real Estate Websites by <b>Sierra Interactive</b>
+            Real Estate Websites by <b>Sierra Interactive</b>
           </p>
-          <a href="#" class="bg-indigo-500 text-white py-4 px-12 rounded-full hover:bg-indigo-600">Scrape</a>
+          <form action="/scraping" method="post">
+            <input type="text" id="website-admin"
+              class="rounded-lg bg-gray-50 border text-gray-900 block flex-1 min-w-0 w-full text-sm border-gray-300 mb-5 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Real Estate Websites by Sierra Interactive" readonly>
+            <button type="submit" class="bg-indigo-500 text-white py-4 px-12 rounded-full hover:bg-indigo-600">
+              Scrape
+            </button>
+          </form>
         </div>
         <div class="w-1/2 pl-16">
-          <img src="https://source.unsplash.com/random?kitchen" class="h-64 w-full object-cover rounded-xl"
+          <img src="https://source.unsplash.com/random?livingroom" class="h-64 w-full object-cover rounded-xl"
             alt="Layout Image" />
         </div>
       </div>
