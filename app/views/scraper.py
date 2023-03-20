@@ -10,6 +10,5 @@ def scraping():
     if request.method == "POST":
         query = conf.SEARH_QUERY
         print(request.method)
-        # testing_celery_task(query)
         scrape_sites(query)
     return render_template("scraping.html")
