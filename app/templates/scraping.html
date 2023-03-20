@@ -1,0 +1,23 @@
+{% extends "base.html" %} {% block content %}
+<!-- component -->
+<div class="h-screen bg-gray-600 flex items-center">
+  <section class="bg-cover bg-center py-32 w-full"
+    style="background-image: url('https://source.unsplash.com/random?house')">
+    <div class="container mx-auto text-left text-white">
+      <div class="flex items-center">
+        <div class="w-1/2">
+          <h1 class="text-5xl font-medium mb-6">Search Real Estate Sites</h1>
+          <p class="text-xl mb-12">
+            Query: Real Estate Websites by <b>Sierra Interactive</b>
+          </p>
+          <a href="#" class="bg-indigo-500 text-white py-4 px-12 rounded-full hover:bg-indigo-600">Scrape</a>
+        </div>
+        <div class="w-1/2 pl-16">
+          <img src="https://source.unsplash.com/random?kitchen" class="h-64 w-full object-cover rounded-xl"
+            alt="Layout Image" />
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

@@ -1,6 +1,16 @@
 version: "3.8"
 
 services:
+  redis:
+    restart: always
+    image: "redis:alpine"
+    ports:
+      - 127.0.0.1:${REDIS_PORT}:6379
+    environment:
+      - REDISCLI_AUTH=${REDIS_PASSWORD}
+    command: >
+      --requirepass ${REDIS_PASSWORD}
+      
   db:
     image: postgres:14
     restart: always

@@ -1,3 +1,4 @@
+# flake8: noqa F401
 import enum
 from datetime import datetime
 from sqlalchemy import Enum
