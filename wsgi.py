@@ -1,5 +1,6 @@
 #!/user/bin/env python
 from app import create_app, db, models, forms
+from config import BaseConfig as conf
 
 app = create_app()
 
@@ -8,7 +9,7 @@ app = create_app()
 @app.shell_context_processor
 def get_context():
     """Objects exposed here will be automatically available from the shell."""
-    return dict(app=app, db=db, m=models, f=forms)
+    return dict(app=app, db=db, m=models, f=forms, conf=conf)
 
 
 @app.cli.command()
@@ -26,9 +27,11 @@ def create_admin():
 
 
 @app.cli.command()
-def example_command():
-    """Create the configured database."""
-    print("Hello World!!!")
+def run_scraper(query: str = conf.SEARH_QUERY):
+    """Runs selenium code."""
+    from app.controllers.selenium import scrape
+
+    scrape(query)
 
 
 if __name__ == "__main__":
