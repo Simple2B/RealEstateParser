@@ -9,7 +9,7 @@ class Email(db.Model, ModelMixin):
     __tablename__ = "emails"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    email = db.Column(db.String(256), unique=True, nullable=False)
+    email = db.Column(db.String(128), unique=True, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     def __repr__(self):

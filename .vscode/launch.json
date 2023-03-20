@@ -20,19 +20,19 @@
             "jinja": true
         },
         {
-            "name": "Docker: Python - Flask",
-            "type": "docker",
+            "name": "shell",
+            "type": "python",
             "request": "launch",
-            "preLaunchTask": "docker-run: debug",
-            "python": {
-                "pathMappings": [
-                    {
-                        "localRoot": "${workspaceFolder}",
-                        "remoteRoot": "/app"
-                    }
-                ],
-                "projectType": "flask"
-            }
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "wsgi:app",
+                "APP_ENV": "development",
+                "FLASK_DEBUG": "1"
+            },
+            "args": [
+                "shell"
+            ],
+            "jinja": true
         }
     ]
 }

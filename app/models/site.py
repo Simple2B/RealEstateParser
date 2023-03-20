@@ -6,7 +6,7 @@ from app import db
 from app.models.utils import ModelMixin
 from .phone import Phone
 from .email import Email
-from .assotiation import phone_site, email_site
+from .association import phone_site, email_site
 
 
 class Site(db.Model, ModelMixin):
@@ -23,8 +23,16 @@ class Site(db.Model, ModelMixin):
     created_at = db.Column(db.DateTime, default=datetime.now)
     parsed_at = db.Column(db.DateTime, default=datetime.max)
 
-    # phones: Mapped[list[Phone]] = relationship(secondary=phone_site)
-    # emails: Mapped[list[Email]] = relationship(secondary=email_site)
+    phones: Mapped[list[Phone]] = relationship(
+        "Phone",
+        secondary=phone_site,
+        backref="sites",
+    )
+    emails: Mapped[list[Email]] = relationship(
+        "Email",
+        secondary=email_site,
+        backref="sites",
+    )
 
     def __repr__(self):
         return f"<{self.id}:{self.url}: {self.state}>"

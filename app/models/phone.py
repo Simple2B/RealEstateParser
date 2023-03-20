@@ -9,7 +9,7 @@ class Phone(db.Model, ModelMixin):
     __tablename__ = "phones"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    number = db.Column(db.String(256), unique=True, nullable=False)
+    number = db.Column(db.String(32), unique=True, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     def __repr__(self):
