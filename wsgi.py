@@ -34,5 +34,14 @@ def run_scraper(query: str = conf.SEARH_QUERY):
     scrape(query)
 
 
+@app.cli.command()
+def sites_amount():
+    """Counts how many sites saved to db"""
+    from app.models import Site
+
+    sites: Site = Site.query.all()
+    print(len(sites))
+
+
 if __name__ == "__main__":
     app.run()

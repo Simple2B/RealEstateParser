@@ -15,13 +15,13 @@ def scrape(query: str):
     REAL_ESTATE_TEXT = "Real Estate Websites by"
     SIERRA_TEXT = "Sierra Interactive"
 
-    # links = []
+    urls = []
 
     chrome_options = webdriver.FirefoxOptions()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("disable-infobars")
+    chrome_options.add_argument("--disable-infobars")
     chrome_options.add_argument("--disable-extensions")
     user_agent = UserAgent()
     user_agent.random
@@ -45,7 +45,7 @@ def scrape(query: str):
                 link = page.find_element(By.TAG_NAME, "a").get_attribute("href")
                 url_pattern = r"https://[www\.]?[\w\-]+\.[\w\.]+\/"
                 matches = re.findall(url_pattern, link)
-                url = matches[0]
+                url = matches[0] if matches else link
                 page_response = requests.get(url)
                 log(
                     log.INFO,
@@ -59,21 +59,21 @@ def scrape(query: str):
                     and SIERRA_TEXT in page_response.text
                     and "google.com" not in link
                 ):
-                    current_site: Site = Site.query.filter_by(url=url)
+                    current_site: Site = Site.query.filter_by(url=url).first()
                     if not current_site:
-                        Site(url=url)
-
-                    # links.append(url)
+                        Site(url=url).save()
+                    urls.append(url)
 
             pages_counter += 1
             next_button = browser.find_element(By.ID, "pnnext")
-            if pages_counter == 3 or not next_button:
+            if pages_counter == 17 or not next_button:
                 break
-            next_button.click()
-        # print(links)
-        # print(len(links))
+
+            new_page = next_button.get_attribute("href")
+            browser.get(new_page)
+        log(log.INFO, "urls just saved: [%d]", len(urls))
     except Exception as e:
-        print(e)
+        print("Exception: ", e)
     finally:
         browser.close()
         browser.quit()
