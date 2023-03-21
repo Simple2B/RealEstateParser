@@ -4,8 +4,8 @@ from selenium.webdriver.common.by import By
 from fake_useragent import UserAgent
 import requests
 import re
-import random
 from config import BaseConfig as conf
+from app.models import Site
 from app.logger import log
 
 
@@ -15,7 +15,7 @@ def scrape(query: str):
     REAL_ESTATE_TEXT = "Real Estate Websites by"
     SIERRA_TEXT = "Sierra Interactive"
 
-    links = []
+    # links = []
 
     chrome_options = webdriver.FirefoxOptions()
     chrome_options.add_argument("--headless")
@@ -46,13 +46,10 @@ def scrape(query: str):
                 url_pattern = r"https://[www\.]?[\w\-]+\.[\w\.]+\/"
                 matches = re.findall(url_pattern, link)
                 url = matches[0]
-                contact = url + "contact/"
-                page_response = requests.get(contact)
-                if page_response.status_code != 200:
-                    page_response = requests.get(url)
+                page_response = requests.get(url)
                 log(
                     log.INFO,
-                    "page_response.status_code = [%s] REAL_ESTATE_TEXT = [%s]",
+                    "page_response.status_code: %s, REAL_ESTATE_TEXT: %s",
                     page_response.status_code,
                     REAL_ESTATE_TEXT in page_response.text,
                 )
@@ -62,56 +59,19 @@ def scrape(query: str):
                     and SIERRA_TEXT in page_response.text
                     and "google.com" not in link
                 ):
+                    current_site: Site = Site.query.filter_by(url=url)
+                    if not current_site:
+                        Site(url=url)
 
-                    filename = (
-                        "app/controllers/selenium/csv/sierra_file_"
-                        + str(random.randint(1000, 9999))
-                        + "_"
-                        + str(random.randint(1000, 9999))
-                        + ".csv"
-                    )
-                    with open(filename, "w", encoding="utf-8") as file:
-                        phones_patterns = [
-                            r"\d{3}\s\d{3}\s\d{4}",
-                            r"\d{3}-\d{3}-\d{4}",
-                            r"\d{3}\.\d{3}\.\d{4}",
-                            r"\(\d{3}\).?\d{7}",
-                            r"\(\d{3}\).?\d{3}.\d{4}",
-                        ]
-
-                        phones_matches = []
-                        for pattern in phones_patterns:
-                            single_match = re.findall(pattern, page_response.text)
-                            if single_match:
-                                phones_matches.extend(single_match)
-
-                        phones_cleaned = [
-                            x for x in phones_matches if x != "(000) 000-0000"
-                        ]
-                        unique_phones = set(phones_cleaned)
-                        phones_csv = ",".join(unique_phones)
-
-                        email_pattern = r"[\w_.]+@[a-z\-]+\.[a-z\.]{2,}"
-
-                        mails_match = re.findall(email_pattern, page_response.text)
-                        mails_cleaned = [
-                            x for x in mails_match if x != "name@website.com"
-                        ]
-
-                        unique_mails = set(mails_cleaned)
-                        mails_csv = ",".join(unique_mails)
-                        csv = f"URL,Contacts\n{url},{mails_csv},{phones_csv}"
-                        file.write(csv)
-
-                    links.append(url)
+                    # links.append(url)
 
             pages_counter += 1
             next_button = browser.find_element(By.ID, "pnnext")
             if pages_counter == 3 or not next_button:
                 break
             next_button.click()
-        print(links)
-        print(len(links))
+        # print(links)
+        # print(len(links))
     except Exception as e:
         print(e)
     finally:
