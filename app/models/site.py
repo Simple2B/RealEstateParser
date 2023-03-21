@@ -36,4 +36,4 @@ class Site(db.Model, ModelMixin):
     )
 
     def __repr__(self):
-        return f"<{self.id}:{self.url}: {self.state}>"
+        return f"<{self.id}:{self.url}: {self.state}, {self.emails}, {self.phones}>"

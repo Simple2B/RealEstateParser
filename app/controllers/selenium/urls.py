@@ -67,7 +67,7 @@ def scrape(query: str):
 
             pages_counter += 1  # TODO move pages amount to config
             next_button = browser.find_element(By.ID, "pnnext")
-            if pages_counter == 3 or not next_button:
+            if pages_counter == 5 or not next_button:
                 break
 
             new_page = next_button.get_attribute("href")

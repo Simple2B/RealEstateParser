@@ -13,8 +13,6 @@ scraping_blueprint = Blueprint("scraping", __name__)
 @login_required
 def scraping():
     sites_amount: Site = Site.query.count()
-    # if request.method == "POST":
-    #     log(log.INFO, "request.method: [%s]", request.method)
     log(log.INFO, "request.method: [%s]", request.method)
     return render_template("scraping.html", sites_amount=sites_amount)
 
@@ -33,11 +31,13 @@ def download():
         ]
         writer.writerow(row)
         for index, site in enumerate(sites):
+            emails = [x.email for x in site.emails]
+            phones = [x.number for x in site.phones]
             row = [
                 f"{index + 1}",
                 site.url,
-                " ".join(site.emails),
-                ";".join(site.phones),
+                " ".join(emails),
+                "; ".join(phones),
             ]
             writer.writerow(row)
 

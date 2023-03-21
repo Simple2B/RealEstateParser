@@ -35,8 +35,16 @@ def run_scraper(query: str = conf.SEARH_QUERY):
 
 
 @app.cli.command()
-def sites_amount():
-    """Counts how many sites saved to db"""
+def get_contacts():
+    """Goes through sites in db and gets emails and phones for each site"""
+    from app.controllers.selenium import scrape_contacts
+
+    scrape_contacts()
+
+
+@app.cli.command()
+def see_contacts():
+    """Gets sites' contacts"""
     from app.models import Site
 
     sites: Site = Site.query.all()
