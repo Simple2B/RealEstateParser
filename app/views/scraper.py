@@ -2,6 +2,7 @@ import io
 import csv
 from datetime import datetime
 from flask import request, render_template, Blueprint, send_file
+from flask_login import login_required
 from app.models import Site
 from app.logger import log
 
@@ -9,6 +10,7 @@ scraping_blueprint = Blueprint("scraping", __name__)
 
 
 @scraping_blueprint.route("/scraping", methods=["GET", "POST"])
+@login_required
 def scraping():
     sites_amount: Site = Site.query.count()
     # if request.method == "POST":
@@ -18,6 +20,7 @@ def scraping():
 
 
 @scraping_blueprint.route("/download", methods=["GET", "POST"])
+@login_required
 def download():
     sites = Site.query.all()
     with io.StringIO() as proxy:
