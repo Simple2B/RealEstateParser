@@ -8,12 +8,9 @@
         <div class="w-1/2">
           <h1 class="text-5xl font-medium mb-6">Search Real Estate Sites</h1>
           <p class="text-xl mb-12">
-            Real Estate Websites by <b>Sierra Interactive</b>
+            Real Estate Websites by <b>Sierra Interactive</b>: {{sites_amount}}
           </p>
-          <form action="/scraping" method="post">
-            <input type="text" id="website-admin"
-              class="rounded-lg bg-gray-50 border text-gray-900 block flex-1 min-w-0 w-full text-sm border-gray-300 mb-5 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Real Estate Websites by Sierra Interactive" readonly>
+          <form action="/download" method="post">
             <button type="submit" class="bg-indigo-500 text-white py-4 px-12 rounded-full hover:bg-indigo-600">
               Scrape
             </button>

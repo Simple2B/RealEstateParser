@@ -62,7 +62,7 @@ def scrape(query: str):
                     current_site: Site = Site.query.filter_by(url=url).first()
                     if not current_site:
                         Site(url=url).save()
-                    urls.append(url)
+                        urls.append(url)
 
             pages_counter += 1
             next_button = browser.find_element(By.ID, "pnnext")

@@ -24,8 +24,16 @@ class Site(db.Model, ModelMixin):
     created_at = db.Column(db.DateTime, default=datetime.now)
     parsed_at = db.Column(db.DateTime, default=datetime.max)
 
-    # phones: Mapped[list[Phone]] = relationship(secondary=phone_site)
-    # emails: Mapped[list[Email]] = relationship(secondary=email_site)
+    phones: Mapped[list[Phone]] = relationship(
+        "Phone",
+        secondary=phone_site,
+        backref="phones",
+    )
+    emails: Mapped[list[Email]] = relationship(
+        "Email",
+        secondary=email_site,
+        backref="emails",
+    )
 
     def __repr__(self):
         return f"<{self.id}:{self.url}: {self.state}>"
