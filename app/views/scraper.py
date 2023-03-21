@@ -1,3 +1,6 @@
+import io
+import csv
+from datetime import datetime
 from flask import request, render_template, Blueprint, send_file
 from app.models import Site
 from app.logger import log
@@ -16,11 +19,36 @@ def scraping():
 
 @scraping_blueprint.route("/download", methods=["GET", "POST"])
 def download():
-    file_path = "contacts.csv"
     sites = Site.query.all()
-    file_content = "id,url\n"
-    for site in sites:
-        file_content += f"{str(site.id)},{site.url}\n"
-    with open(file_path, "w") as file:
-        file.write(file_content)
-    return send_file(file_path, as_attachment=True)
+    with io.StringIO() as proxy:
+        writer = csv.writer(proxy)
+        row = [
+            "№",
+            "URL",
+            "Emails",
+            "Phones",
+        ]
+        writer.writerow(row)
+        for index, site in enumerate(sites):
+            row = [
+                f"{index + 1}",
+                site.url,
+                " ".join(site.emails),
+                ";".join(site.phones),
+            ]
+            writer.writerow(row)
+
+        # Creating the byteIO object from the StringIO Object
+        mem = io.BytesIO()
+        mem.write(proxy.getvalue().encode("utf-8"))
+        mem.seek(0)
+
+    now = datetime.now()
+    return send_file(
+        mem,
+        as_attachment=True,
+        download_name=f"contacts_{now.strftime('%Y-%m-%d-%H-%M-%S')}.csv",
+        mimetype="text/csv",
+        max_age=0,
+        last_modified=now,
+    )

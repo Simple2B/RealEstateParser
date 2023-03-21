@@ -46,6 +46,9 @@ def scrape(query: str):
                 url_pattern = r"https://[www\.]?[\w\-]+\.[\w\.]+\/"
                 matches = re.findall(url_pattern, link)
                 url = matches[0] if matches else link
+                current_site: Site = Site.query.filter_by(url=url).first()
+                if current_site:
+                    continue
                 page_response = requests.get(url)
                 log(
                     log.INFO,
@@ -59,14 +62,12 @@ def scrape(query: str):
                     and SIERRA_TEXT in page_response.text
                     and "google.com" not in link
                 ):
-                    current_site: Site = Site.query.filter_by(url=url).first()
-                    if not current_site:
-                        Site(url=url).save()
-                        urls.append(url)
+                    Site(url=url).save()
+                    urls.append(url)
 
-            pages_counter += 1
+            pages_counter += 1  # TODO move pages amount to config
             next_button = browser.find_element(By.ID, "pnnext")
-            if pages_counter == 17 or not next_button:
+            if pages_counter == 3 or not next_button:
                 break
 
             new_page = next_button.get_attribute("href")
