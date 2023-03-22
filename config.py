@@ -28,7 +28,7 @@ class BaseConfig(object):
     ADMIN_EMAIL = os.getenv("ADMIN_NAME", "admin@simple2b.net")
     REDIS_URL = os.getenv("REDIS_URL", "")
     SEARH_QUERY = os.getenv("SEARH_QUERY", "")
-    MAX_PAGES_AMOUNT = int(os.getenv("MAX_PAGES_AMOUNT", "1000"))
+    MAX_PAGES_AMOUNT = int(os.getenv("MAX_PAGES_AMOUNT", "100"))
 
     @staticmethod
     def configure(app):

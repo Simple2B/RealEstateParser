@@ -45,9 +45,11 @@ def scrape(query: str):
         pages_counter = 0
         while True:
             time.sleep(1)
-            results = browser.find_elements(By.CLASS_NAME, "MjjYud")
+            results = browser.find_elements(By.CLASS_NAME, "b_algo")
             for page in results:
-                link = page.find_element(By.TAG_NAME, "a").get_attribute("href")
+                inner_div = page.find_element(By.CLASS_NAME, "b_title")
+                h2 = inner_div.find_element(By.TAG_NAME, "h2")
+                link = h2.find_element(By.TAG_NAME, "a").get_attribute("href")
                 url_pattern = r"https://[www\.]?[\w\-]+\.[\w\.]+\/"
                 matches = re.findall(url_pattern, link)
                 url = matches[0] if matches else link
@@ -79,13 +81,9 @@ def scrape(query: str):
             pages_counter += 1
             log(log.INFO, "Pages parsed: %d", pages_counter)
             try:
-                next_button = browser.find_element(By.ID, "pnnext")
+                next_button = browser.find_element(By.CLASS_NAME, "sb_pagN")
             except Exception:
-                try:
-                    log(log.ERROR, "No next button")
-                    next_button = browser.find_element(By.TAG_NAME, "i")
-                except Exception:
-                    log(log.ERROR, "No extended results")
+                log(log.ERROR, "No next button")
 
             if pages_counter >= conf.MAX_PAGES_AMOUNT:
                 log(log.INFO, "Max pages reached")
