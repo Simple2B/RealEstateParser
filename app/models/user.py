@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from app import db
 from app.models.utils import ModelMixin
+from app.logger import log
 
 
 def gen_password_reset_id() -> str:
@@ -42,8 +43,15 @@ class User(db.Model, UserMixin, ModelMixin):
                 func.lower(cls.email) == func.lower(user_id),
             )
         ).first()
-        if user is not None and check_password_hash(user.password, password):
-            return user
+        if not user:
+            log(log.ERROR, "Unknown user: [%s]", user_id)
+            return
+
+        if not check_password_hash(user.password, password):
+            log(log.ERROR, "Wrong password [%s] for user: [%s]", password, user_id)
+            return
+
+        return user
 
     def __repr__(self):
         return f"<User: {self.username}>"

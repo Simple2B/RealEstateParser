@@ -10,7 +10,7 @@ scraping_blueprint = Blueprint("scraping", __name__)
 
 
 @scraping_blueprint.route("/scraping", methods=["GET", "POST"])
-# @login_required
+@login_required
 def scraping():
     sites_amount: Site = Site.query.count()
     log(log.INFO, "request.method: [%s]", request.method)
@@ -18,7 +18,7 @@ def scraping():
 
 
 @scraping_blueprint.route("/download", methods=["GET", "POST"])
-# @login_required
+@login_required
 def download():
     sites = Site.query.all()
     with io.StringIO() as proxy:
