@@ -1,8 +1,10 @@
 {% extends "base.html" %} {% block content %}
 <!-- component -->
 <div class="h-screen bg-gray-600 flex items-center">
-  <section class="bg-cover bg-center py-32 w-full"
-    style="background-image: url('https://source.unsplash.com/random?house')">
+  <section
+    class="bg-cover bg-center py-32 w-full"
+    style="background-image: url('https://source.unsplash.com/random?house')"
+  >
     <div class="container mx-auto text-left text-white">
       <div class="flex items-center">
         <div class="w-1/2">
@@ -11,18 +13,25 @@
             Real Estate Websites by <b>Sierra Interactive</b>: {{sites_amount}}
           </p>
           <div class="flex">
-            <form action="/download" method="post">
-              <button type="submit" class="bg-indigo-500 text-white py-4 px-12 rounded-full hover:bg-indigo-600">
-                Download
-              </button>
-            </form>
-            <a href="/scraping" class="bg-indigo-200 text-white py-4 px-12 rounded-full hover:bg-indigo-600">
-              See Results</a>
+            <a
+              href="{{ url_for('scraping.download') }}"
+              class="bg-indigo-200 text-white py-4 px-12 rounded-full hover:bg-indigo-600"
+              >Download</a
+            >
+            <a
+              href="{{ url_for('scraping.scraping') }}"
+              class="bg-indigo-200 text-white py-4 px-12 rounded-full hover:bg-indigo-600"
+            >
+              See Results</a
+            >
           </div>
         </div>
         <div class="w-1/2 pl-16">
-          <img src="https://source.unsplash.com/random?livingroom" class="h-64 w-full object-cover rounded-xl"
-            alt="Layout Image" />
+          <img
+            src="https://source.unsplash.com/random?livingroom"
+            class="h-64 w-full object-cover rounded-xl"
+            alt="Layout Image"
+          />
         </div>
       </div>
     </div>

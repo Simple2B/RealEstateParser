@@ -6,6 +6,7 @@ from app.models import User
 from app.forms import LoginForm, RegistrationForm
 from app import mail
 from config import BaseConfig as conf
+from app.logger import log
 
 auth_blueprint = Blueprint("auth", __name__)
 
@@ -60,6 +61,8 @@ def login():
             flash("Login successful.", "success")
             return redirect(url_for("main.index"))
         flash("Wrong user ID or password.", "danger")
+    elif form.is_submitted():
+        log(log.ERROR, "Form validation: %s", form.errors)
     return render_template("auth/login.html", form=form)
 
 

@@ -17,14 +17,14 @@ def scraping():
     return render_template("scraping.html", sites_amount=sites_amount)
 
 
-@scraping_blueprint.route("/download", methods=["GET", "POST"])
+@scraping_blueprint.route("/download", methods=["GET"])
 @login_required
 def download():
     sites = Site.query.all()
     with io.StringIO() as proxy:
         writer = csv.writer(proxy)
         row = [
-            "№",
+            "No",
             "URL",
             "Emails",
             "Phones",
