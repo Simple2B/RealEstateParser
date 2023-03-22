@@ -7,7 +7,7 @@ from app import db
 from app.models.utils import ModelMixin
 from .phone import Phone
 from .email import Email
-from .assotiation import phone_site, email_site
+from .association import phone_site, email_site
 
 
 class Site(db.Model, ModelMixin):
@@ -27,12 +27,12 @@ class Site(db.Model, ModelMixin):
     phones: Mapped[list[Phone]] = relationship(
         "Phone",
         secondary=phone_site,
-        backref="phones",
+        backref="sites",
     )
     emails: Mapped[list[Email]] = relationship(
         "Email",
         secondary=email_site,
-        backref="emails",
+        backref="sites",
     )
 
     def __repr__(self):
