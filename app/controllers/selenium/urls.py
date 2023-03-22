@@ -1,4 +1,5 @@
 import time
+import us
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from fake_useragent import UserAgent
@@ -99,3 +100,13 @@ def scrape(query: str):
     finally:
         browser.close()
         browser.quit()
+
+
+def scrape_states():
+    for state in us.states.STATES:
+        state: us.states.State = state
+        query_str = "+".join([state.abbr, conf.SEARCH_STR])
+        query = conf.BASE_GOOGLE_GET.format(query_str)
+        scrape(query)
+        # state
+    pass

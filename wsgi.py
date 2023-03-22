@@ -1,4 +1,5 @@
 #!/user/bin/env python
+import click
 from app import create_app, db, models, forms
 from config import BaseConfig as conf
 
@@ -27,11 +28,20 @@ def create_admin():
 
 
 @app.cli.command()
+@click.argument("query", default=conf.SEARCH_QUERY)
 def run_scraper(query: str = conf.SEARCH_QUERY):
     """Runs selenium code."""
     from app.controllers.selenium import scrape
 
     scrape(query)
+
+
+@app.cli.command()
+def run_scrap_states():
+    """Runs selenium code."""
+    from app.controllers.selenium import scrape_states
+
+    scrape_states()
 
 
 @app.cli.command()

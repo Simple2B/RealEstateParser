@@ -30,8 +30,12 @@ class BaseConfig(object):
     ADMIN_PASS = os.getenv("ADMIN_NAME", "admin")
     ADMIN_EMAIL = os.getenv("ADMIN_NAME", "admin@simple2b.net")
     REDIS_URL = os.getenv("REDIS_URL", "")
-    SEARCH_QUERY = os.getenv("SEARCH_QUERY", "")
+    SEARCH_QUERY = os.getenv(
+        "SEARCH_QUERY",
+        "Real+Estate+Websites+by+Sierra+Interactive",
+    )
     MAX_PAGES_AMOUNT = int(os.getenv("MAX_PAGES_AMOUNT", "100"))
+    SEARCH_STR = os.getenv("SEARCH_STR", "")
 
     BASE_GOOGLE_GET = os.getenv(
         "BASE_GOOGLE_GET",
