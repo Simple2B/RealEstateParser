@@ -27,7 +27,7 @@ def create_admin():
 
 
 @app.cli.command()
-def run_scraper(query: str = conf.SEARH_QUERY):
+def run_scraper(query: str = conf.SEARCH_QUERY):
     """Runs selenium code."""
     from app.controllers.selenium import scrape
 

@@ -29,7 +29,7 @@ def set_browser():
 
 def scrape(query: str):
     log(log.INFO, "run controllers.scrape()")
-    log(log.INFO, "query: [%s]", conf.SEARH_QUERY)
+    log(log.INFO, "query: [%s]", conf.SEARCH_QUERY)
     REAL_ESTATE_TEXT = "Real Estate Websites by"
     SIERRA_TEXT = "Sierra Interactive"
 
