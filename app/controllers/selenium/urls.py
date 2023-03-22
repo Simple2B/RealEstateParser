@@ -46,10 +46,15 @@ def scrape(query: str):
                 url_pattern = r"https://[www\.]?[\w\-]+\.[\w\.]+\/"
                 matches = re.findall(url_pattern, link)
                 url = matches[0] if matches else link
+                if "google.com" in url:
+                    continue
                 current_site: Site = Site.query.filter_by(url=url).first()
                 if current_site:
                     continue
-                page_response = requests.get(url)
+                try:
+                    page_response = requests.get(url)
+                except Exception:
+                    continue
                 log(
                     log.INFO,
                     "page_response.status_code: %s, REAL_ESTATE_TEXT: %s",
@@ -60,21 +65,24 @@ def scrape(query: str):
                     page_response.status_code == 200
                     and REAL_ESTATE_TEXT in page_response.text
                     and SIERRA_TEXT in page_response.text
-                    and "google.com" not in link
                 ):
                     Site(url=url).save()
                     urls.append(url)
 
             pages_counter += 1  # TODO move pages amount to config
             next_button = browser.find_element(By.ID, "pnnext")
-            if pages_counter == 5 or not next_button:
+            if pages_counter >= conf.MAX_PAGES_AMOUNT:
+                log(log.INFO, "Max pages reached")
+                break
+            if not next_button:
+                log(log.INFO, "Next button is not found")
                 break
 
             new_page = next_button.get_attribute("href")
             browser.get(new_page)
         log(log.INFO, "urls just saved: [%d]", len(urls))
     except Exception as e:
-        print("Exception: ", e)
+        log(log.INFO, "Error: [%s]", e)
     finally:
         browser.close()
         browser.quit()
