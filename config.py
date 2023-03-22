@@ -24,10 +24,11 @@ class BaseConfig(object):
     MAIL_PASSWORD = os.getenv("MAIL_PASSWORD", "!setup in .env!")
     MAIL_DEFAULT_SENDER = os.getenv("MAIL_DEFAULT_SENDER", "!setup in .env!")
     ADMIN_NAME = os.getenv("ADMIN_NAME", "admin")
-    ADMIN_PASS = os.getenv("ADMIN_NAME", "admin")
-    ADMIN_EMAIL = os.getenv("ADMIN_NAME", "admin@simple2b.net")
+    ADMIN_PASS = os.getenv("ADMIN_PASS", "admin")
+    ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "admin@simple2b.net")
     REDIS_URL = os.getenv("REDIS_URL", "")
     SEARH_QUERY = os.getenv("SEARH_QUERY", "")
+    BING_SEARH_QUERY = os.getenv("BING_SEARH_QUERY", "")
     MAX_PAGES_AMOUNT = int(os.getenv("MAX_PAGES_AMOUNT", "100"))
 
     @staticmethod

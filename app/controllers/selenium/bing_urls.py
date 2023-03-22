@@ -27,9 +27,9 @@ def set_browser():
     return browser
 
 
-def scrape(query: str):
+def bing_scrape(query: str):
     log(log.INFO, "run controllers.scrape()")
-    log(log.INFO, "query: [%s]", conf.SEARH_QUERY)
+    log(log.INFO, "query: [%s]", query)
     REAL_ESTATE_TEXT = "Real Estate Websites by"
     SIERRA_TEXT = "Sierra Interactive"
 

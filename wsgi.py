@@ -35,6 +35,14 @@ def run_scraper(query: str = conf.SEARH_QUERY):
 
 
 @app.cli.command()
+def run_bing_scraper(query: str = conf.BING_SEARH_QUERY):
+    """Runs selenium code."""
+    from app.controllers.selenium import bing_scrape
+
+    bing_scrape(query)
+
+
+@app.cli.command()
 def get_contacts():
     """Goes through sites in db and gets emails and phones for each site"""
     from app.controllers.selenium import scrape_contacts
