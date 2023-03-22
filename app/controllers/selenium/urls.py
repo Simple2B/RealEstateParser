@@ -66,10 +66,13 @@ def scrape(query: str):
                     and REAL_ESTATE_TEXT in page_response.text
                     and SIERRA_TEXT in page_response.text
                 ):
-                    Site(url=url).save()
+                    new_site = Site(url=url)
+                    new_site.save()
                     urls.append(url)
+                    log(log.INFO, "[%d] Saved URL: %s", new_site.id, url)
 
-            pages_counter += 1  # TODO move pages amount to config
+            pages_counter += 1
+            log(log.INFO, "Pages parsed: %d", pages_counter)
             next_button = browser.find_element(By.ID, "pnnext")
             if pages_counter >= conf.MAX_PAGES_AMOUNT:
                 log(log.INFO, "Max pages reached")
