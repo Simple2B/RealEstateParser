@@ -35,11 +35,12 @@ class BaseConfig(object):
         "Real+Estate+Websites+by+Sierra+Interactive",
     )
     MAX_PAGES_AMOUNT = int(os.getenv("MAX_PAGES_AMOUNT", "100"))
-    SEARCH_STR = os.getenv("SEARCH_STR", "")
+    SEARCH_STR = os.getenv("SEARCH_STR", "Real+Estate+Websites+by+Sierra+Interactive")
 
     BASE_GOOGLE_GET = os.getenv(
         "BASE_GOOGLE_GET",
-        "https://www.google.com/search?q={}&sxsrf=AJOqlzXEhSdrbbM-_fj3FpUJV-wRB_kX6w:1679489665710&ei=gfoaZI-KK9iPwPAP5MuPiAk&start=0&sa=N&filter=0&ved=2ahUKEwjPzrbHyu_9AhXYBxAIHeTlA5E4kAMQ8tMDegQIAxAE&biw=1710&bih=991&dpr=2",
+        # "https://www.google.com/search?q={}&sxsrf=AJOqlzXEhSdrbbM-_fj3FpUJV-wRB_kX6w:1679489665710&ei=gfoaZI-KK9iPwPAP5MuPiAk&start=0&sa=N&filter=0&ved=2ahUKEwjPzrbHyu_9AhXYBxAIHeTlA5E4kAMQ8tMDegQIAxAE&biw=1710&bih=991&dpr=2",
+        "https://www.google.com/search?q={}",
     )
 
     @staticmethod

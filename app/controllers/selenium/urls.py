@@ -1,5 +1,6 @@
 import time
 import us
+import geonamescache
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from fake_useragent import UserAgent
@@ -30,7 +31,7 @@ def set_browser():
 
 def scrape(query: str):
     log(log.INFO, "run controllers.scrape()")
-    log(log.INFO, "query: [%s]", conf.SEARCH_QUERY)
+    log(log.INFO, "query: [%s]", query)
     REAL_ESTATE_TEXT = "Real Estate Websites by"
     SIERRA_TEXT = "Sierra Interactive"
 
@@ -46,7 +47,7 @@ def scrape(query: str):
         pages_counter = 0
         while True:
             time.sleep(1)
-            results = browser.find_elements(By.CLASS_NAME, "MjjYud")
+            results = browser.find_elements(By.CLASS_NAME, "yuRUbf")
             for page in results:
                 link = page.find_element(By.TAG_NAME, "a").get_attribute("href")
                 url_pattern = r"https://[www\.]?[\w\-]+\.[\w\.]+\/"
@@ -110,3 +111,26 @@ def scrape_states():
         scrape(query)
         # state
     pass
+
+
+def scrape_cities():
+    gc = geonamescache.GeonamesCache()
+    cities = gc.get_cities()
+    us_cities = []
+    for city in cities:
+        if cities[city]["countrycode"] == "US":
+            us_cities.append(cities[city]["name"].replace(" ", "+"))
+    for us_city in us_cities:
+        query_str = "+".join([us_city, conf.SEARCH_STR])
+        query = conf.BASE_GOOGLE_GET.format(query_str)
+        log(log.INFO, "-------%s-------", us_city)
+        scrape(query)
+
+
+def scrape_counties():
+    gc = geonamescache.GeonamesCache()
+    counties = gc.get_us_counties()
+    for county in counties:
+        query_str = "+".join([county["name"].replace(" ", "+"), conf.SEARCH_STR])
+        query = conf.BASE_GOOGLE_GET.format(query_str)
+        scrape(query)

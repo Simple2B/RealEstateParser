@@ -37,11 +37,27 @@ def run_scraper(query: str = conf.SEARCH_QUERY):
 
 
 @app.cli.command()
-def run_scrap_states():
+def run_scrape_states():
     """Runs selenium code."""
     from app.controllers.selenium import scrape_states
 
     scrape_states()
+
+
+@app.cli.command()
+def run_scrape_cities():
+    """Runs selenium code."""
+    from app.controllers.selenium import scrape_cities
+
+    scrape_cities()
+
+
+@app.cli.command()
+def run_scrape_counties():
+    """Runs selenium code."""
+    from app.controllers.selenium import scrape_counties
+
+    scrape_counties()
 
 
 @app.cli.command()
