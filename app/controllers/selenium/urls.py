@@ -1,3 +1,4 @@
+import random
 import time
 import us
 import geonamescache
@@ -43,6 +44,9 @@ def scrape(query: str):
         log(log.INFO, "try")
         browser.get(query)
         log(log.INFO, "browser.get(query): [%s]", query)
+        while "captcha" in browser.page_source:
+            log(log.WARNING, "CAPTCHA DETECTED!")
+            time.sleep(3)
 
         pages_counter = 0
         while True:
@@ -120,6 +124,7 @@ def scrape_cities():
     for city in cities:
         if cities[city]["countrycode"] == "US":
             us_cities.append(cities[city]["name"].replace(" ", "+"))
+    random.shuffle(us_cities)
     for us_city in us_cities:
         query_str = "+".join([us_city, conf.SEARCH_STR])
         query = conf.BASE_GOOGLE_GET.format(query_str)
@@ -130,6 +135,7 @@ def scrape_cities():
 def scrape_counties():
     gc = geonamescache.GeonamesCache()
     counties = gc.get_us_counties()
+    random.shuffle(counties)
     for county in counties:
         query_str = "+".join([county["name"].replace(" ", "+"), conf.SEARCH_STR])
         query = conf.BASE_GOOGLE_GET.format(query_str)
