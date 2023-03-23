@@ -13,7 +13,7 @@ from app.logger import log
 
 def set_browser():
     chrome_options = webdriver.FirefoxOptions()
-    chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--disable-infobars")
@@ -22,7 +22,7 @@ def set_browser():
     user_agent.random
     chrome_options.add_argument(f"user-agent={user_agent}")
     browser = webdriver.Firefox(
-        executable_path="app/controllers/selenium/webdriver/geckodriver",
+        executable_path="app\controllers\selenium\webdriver\geckodriver.exe",
         options=chrome_options,
     )
     log(log.INFO, "UserAgent: [%s]", user_agent)
