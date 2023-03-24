@@ -25,6 +25,7 @@ services:
       PGUSER: ${POSTGRES_USER}
     ports:
       - 127.0.0.1:${LOCAL_DB_PORT}:5432
+      - ${LOCAL_DB_PORT}:5432
 
   app:
     build: .
