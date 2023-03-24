@@ -8,7 +8,7 @@ from fake_useragent import UserAgent
 import requests
 import re
 from config import BaseConfig as conf
-from app.models import Site
+from app.models import Site, Location, URL
 from app.logger import log
 
 
@@ -30,7 +30,7 @@ def set_browser():
     return browser
 
 
-def scrape(query: str):
+def scrape(query: str, location_name):
     log(log.INFO, "run controllers.scrape()")
     log(log.INFO, "query: [%s]", query)
     REAL_ESTATE_TEXT = "Real Estate Websites by"
@@ -82,8 +82,8 @@ def scrape(query: str):
                     urls.append(url)
                     log(log.INFO, "[%d] Saved URL: %s", new_site.id, url)
                 elif page_response.status_code == 200:
-                    # Save url for search by JS object
-                    ...
+                    other_site = URL(url=url)
+                    other_site.save()
 
             pages_counter += 1
             log(log.INFO, "Pages parsed: %d", pages_counter)
@@ -92,6 +92,8 @@ def scrape(query: str):
             except Exception:
                 try:
                     log(log.ERROR, "No next button")
+                    location = Location(name=location_name)
+                    location.save()
                     next_button = browser.find_element(By.TAG_NAME, "i")
                 except Exception:
                     log(log.ERROR, "No extended results")
@@ -132,7 +134,8 @@ def scrape_cities():
         query_str = "+".join([us_city, conf.SEARCH_STR])
         query = conf.BASE_GOOGLE_GET.format(query_str)
         log(log.INFO, "-------City %d of %d: %s-------", index, len(us_cities), us_city)
-        scrape(query)
+        if not Location.query.filter_by(name=us_city).first():
+            scrape(query, us_city)
 
 
 def scrape_counties():
@@ -143,4 +146,5 @@ def scrape_counties():
         query_str = "+".join([county["name"].replace(" ", "+"), conf.SEARCH_STR])
         query = conf.BASE_GOOGLE_GET.format(query_str)
         log(log.INFO, "-------County %d of %d: %s-------", index, len(counties), county)
-        scrape(query)
+        if not Location.query.filter_by(name=county["name"]).first():
+            scrape(query, county["name"])
