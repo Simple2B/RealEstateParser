@@ -44,13 +44,13 @@ def scrape(query: str):
         log(log.INFO, "try")
         browser.get(query)
         log(log.INFO, "browser.get(query): [%s]", query)
-        while "captcha" in browser.page_source:
-            log(log.WARNING, "CAPTCHA DETECTED!")
-            time.sleep(3)
 
         pages_counter = 0
         while True:
             time.sleep(1)
+            while "captcha" in browser.page_source:
+                log(log.WARNING, "CAPTCHA DETECTED!")
+                time.sleep(3)
             results = browser.find_elements(By.CLASS_NAME, "yuRUbf")
             for page in results:
                 link = page.find_element(By.TAG_NAME, "a").get_attribute("href")
