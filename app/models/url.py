@@ -9,7 +9,7 @@ class URL(db.Model, ModelMixin):
     __tablename__ = "urls"
 
     id = db.Column(db.Integer, primary_key=True)
-    url = db.Column(db.String(256), unique=True, nullable=False)
+    url = db.Column(db.String(256), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     def __repr__(self):
