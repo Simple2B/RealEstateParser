@@ -125,10 +125,10 @@ def scrape_cities():
         if cities[city]["countrycode"] == "US":
             us_cities.append(cities[city]["name"].replace(" ", "+"))
     random.shuffle(us_cities)
-    for us_city in us_cities:
+    for index, us_city in enumerate(us_cities):
         query_str = "+".join([us_city, conf.SEARCH_STR])
         query = conf.BASE_GOOGLE_GET.format(query_str)
-        log(log.INFO, "-------%s-------", us_city)
+        log(log.INFO, "-------City %d of %d: %s-------", index, len(us_cities), us_city)
         scrape(query)
 
 
@@ -136,7 +136,8 @@ def scrape_counties():
     gc = geonamescache.GeonamesCache()
     counties = gc.get_us_counties()
     random.shuffle(counties)
-    for county in counties:
+    for index, county in enumerate(counties):
         query_str = "+".join([county["name"].replace(" ", "+"), conf.SEARCH_STR])
         query = conf.BASE_GOOGLE_GET.format(query_str)
+        log(log.INFO, "-------County %d of %d: %s-------", index, len(counties), county)
         scrape(query)
