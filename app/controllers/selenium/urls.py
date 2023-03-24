@@ -81,6 +81,9 @@ def scrape(query: str):
                     new_site.save()
                     urls.append(url)
                     log(log.INFO, "[%d] Saved URL: %s", new_site.id, url)
+                elif page_response.status_code == 200:
+                    # Save url for search by JS object
+                    ...
 
             pages_counter += 1
             log(log.INFO, "Pages parsed: %d", pages_counter)
