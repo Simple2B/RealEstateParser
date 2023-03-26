@@ -51,10 +51,12 @@ def scrape(query: str, location_name):
             while "captcha" in browser.page_source:
                 log(log.WARNING, "CAPTCHA DETECTED!")
                 time.sleep(3)
-            results = browser.find_elements(By.CLASS_NAME, "yuRUbf")
+            results = browser.find_elements(By.TAG_NAME, "a")
             for page in results:
-                link = page.find_element(By.TAG_NAME, "a").get_attribute("href")
-                url_pattern = r"https://[www\.]?[\w\-]+\.[\w\.]+\/"
+                link = page.get_attribute("href")
+                if not link:
+                    continue
+                url_pattern = r"https://[www\.]?[\w\-]+\.[a-z\.]+\/"
                 matches = re.findall(url_pattern, link)
                 url = matches[0] if matches else link
                 if "google.com" in url:
