@@ -35,7 +35,7 @@ class BaseConfig(object):
         "Real+Estate+Websites+by+Sierra+Interactive",
     )
     MAX_PAGES_AMOUNT = int(os.getenv("MAX_PAGES_AMOUNT", "100"))
-    SEARCH_STR = os.getenv("SEARCH_STR", "Real+Estate+Websites+by+Sierra+Interactive")
+    SEARCH_STR = os.getenv("SEARCH_STR", "new+homes")
 
     BASE_GOOGLE_GET = os.getenv(
         "BASE_GOOGLE_GET",

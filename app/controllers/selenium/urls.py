@@ -94,8 +94,8 @@ def scrape(query: str, location_name):
             except Exception:
                 try:
                     log(log.ERROR, "No next button")
-                    location = Location(name=location_name)
-                    location.save()
+                    # location = Location(name=location_name)
+                    # location.save()
                     next_button = browser.find_element(By.TAG_NAME, "i")
                 except Exception:
                     log(log.ERROR, "No extended results")
@@ -136,8 +136,9 @@ def scrape_cities():
         query_str = "+".join([us_city, conf.SEARCH_STR])
         query = conf.BASE_GOOGLE_GET.format(query_str)
         log(log.INFO, "-------City %d of %d: %s-------", index, len(us_cities), us_city)
-        if not Location.query.filter_by(name=us_city).first():
-            scrape(query, us_city)
+        # if not Location.query.filter_by(name=us_city).first():
+        #     scrape(query, us_city)
+        scrape(query, us_city)
 
 
 def scrape_counties():
