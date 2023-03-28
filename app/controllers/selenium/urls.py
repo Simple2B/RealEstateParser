@@ -8,7 +8,7 @@ from fake_useragent import UserAgent
 import requests
 import re
 from config import BaseConfig as conf
-from app.models import Site, Location, URL
+from app.models import Site, Location, URL, City
 from app.logger import log
 
 
@@ -56,7 +56,7 @@ def scrape(query: str, location_name):
                 link = page.get_attribute("href")
                 if not link:
                     continue
-                url_pattern = r"https://[www\.]?[\w\-]+\.[a-z\.]+\/"
+                url_pattern = r"https://[www\.]?[\w\-]+\.[a-z]{2,3}"
                 matches = re.findall(url_pattern, link)
                 url = matches[0] if matches else link
                 if "google.com" in url:
@@ -94,8 +94,8 @@ def scrape(query: str, location_name):
             except Exception:
                 try:
                     log(log.ERROR, "No next button")
-                    location = Location(name=location_name)
-                    location.save()
+                    # location = Location(name=location_name)
+                    # location.save()
                     next_button = browser.find_element(By.TAG_NAME, "i")
                 except Exception:
                     log(log.ERROR, "No extended results")
@@ -150,3 +150,18 @@ def scrape_counties():
         log(log.INFO, "-------County %d of %d: %s-------", index, len(counties), county)
         if not Location.query.filter_by(name=county["name"]).first():
             scrape(query, county["name"])
+
+
+def scrape_db_cities():
+    page = 1
+    CITIES_PER_PAGE = 100
+    cities: list[City] = City.query.paginate(page=page, per_page=CITIES_PER_PAGE)
+    pages_amount = cities.total // CITIES_PER_PAGE
+    for page in range(1, pages_amount):
+        log(log.INFO, "-------Checking page %d of %d-------", page, pages_amount)
+        cities: list[City] = City.query.paginate(page=page, per_page=CITIES_PER_PAGE)
+        for city in cities:
+            log(log.INFO, "Checking city %d: %s, %s", city.id, city.name, city.state)
+            query_str = "+".join([city.name, conf.SEARCH_STR])
+            query = conf.BASE_GOOGLE_GET.format(query_str)
+            scrape(query, city.name)

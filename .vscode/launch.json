@@ -93,6 +93,36 @@
                 "check-image-object"
             ],
             "jinja": true
+        },
+        {
+            "name": "Get Cities",
+            "type": "python",
+            "request": "launch",
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "wsgi:app",
+                "APP_ENV": "development",
+                "FLASK_DEBUG": "1"
+            },
+            "args": [
+                "get-cities"
+            ],
+            "jinja": true
+        },
+        {
+            "name": "Scrap db cities",
+            "type": "python",
+            "request": "launch",
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "wsgi:app",
+                "APP_ENV": "development",
+                "FLASK_DEBUG": "1"
+            },
+            "args": [
+                "run-scrape-db-cities"
+            ],
+            "jinja": true
         }
     ]
 }

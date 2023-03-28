@@ -61,11 +61,11 @@ def run_scrape_counties():
 
 
 @app.cli.command()
-def get_cities():
+def run_scrape_db_cities():
     """Runs selenium code."""
-    from app.controllers.selenium import get_cities
+    from app.controllers.selenium import scrape_db_cities
 
-    get_cities()
+    scrape_db_cities()
 
 
 @app.cli.command()
