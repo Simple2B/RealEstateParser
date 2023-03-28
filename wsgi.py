@@ -61,6 +61,14 @@ def run_scrape_counties():
 
 
 @app.cli.command()
+def get_cities():
+    """Runs selenium code."""
+    from app.controllers.selenium import get_cities
+
+    get_cities()
+
+
+@app.cli.command()
 def get_contacts():
     """Goes through sites in db and gets emails and phones for each site"""
     from app.controllers.selenium import scrape_contacts
