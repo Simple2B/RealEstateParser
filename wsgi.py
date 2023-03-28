@@ -69,6 +69,14 @@ def get_contacts():
 
 
 @app.cli.command()
+def check_image_object():
+    """Goes through sites in db and gets emails and phones for each site"""
+    from app.controllers.selenium import check_graphic_object
+
+    check_graphic_object()
+
+
+@app.cli.command()
 def see_contacts():
     """Gets sites' contacts"""
     from app.models import Site

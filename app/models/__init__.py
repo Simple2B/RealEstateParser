@@ -5,3 +5,4 @@ from .phone import Phone
 from .email import Email
 from .location import Location
 from .url import URL
+from .image import Image
