@@ -32,7 +32,11 @@ def check_graphic_object():
             browser.get(site.url)
             results = browser.find_elements(By.TAG_NAME, "script")
             for r in results:
-                link = r.get_attribute("href")
+                try:
+                    link = r.get_attribute("href")
+                except Exception as e:
+                    log(log.ERROR, "No attribute href: %s", e)
+                    continue
                 if not link:
                     continue
                 try:
