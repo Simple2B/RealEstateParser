@@ -30,6 +30,20 @@ def check_graphic_object():
         for site in sites:
             log(log.INFO, "Checking url: %s", site.url)
             browser.get(site.url)
+
+            if (
+                OBJECT_TEXT_1 in browser.page_source
+                and OBJECT_TEXT_2 in browser.page_source
+            ):
+                log(log.INFO, "Text found in url: %s", site.url)
+                saved: Image = Image.query.filter_by(url=site.url).first()
+                if saved:
+                    continue
+                Image(url=site.url).save()
+                log(log.INFO, "Site saved: %s", site.url)
+                foundings.append(site.url)
+                continue
+
             results = browser.find_elements(By.TAG_NAME, "script")
             for r in results:
                 try:
