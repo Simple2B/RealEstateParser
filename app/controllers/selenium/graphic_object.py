@@ -1,4 +1,5 @@
 import requests
+import re
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from app.models import URL, Image
@@ -24,24 +25,30 @@ def check_graphic_object():
     SITES_PER_PAGE = 100
     sites: list[URL] = URL.query.paginate(page=page, per_page=SITES_PER_PAGE)
     pages_amount = sites.total // SITES_PER_PAGE
-    for page in range(1, pages_amount):
+    for page in range(2, pages_amount):
         log(log.INFO, "-------Checking page %d of %d-------", page, pages_amount)
         sites: list[URL] = URL.query.paginate(page=page, per_page=SITES_PER_PAGE)
         for site in sites:
+            url_pattern = r"https://[www\.]?[\w\-]+\.[a-z]{2,3}"
+            matches = re.findall(url_pattern, site.url)
+            url = matches[0] if matches else site.url
             log(log.INFO, "Checking url: %s", site.url)
-            browser.get(site.url)
+            try:
+                browser.get(url)
+            except Exception:
+                continue
 
             if (
                 OBJECT_TEXT_1 in browser.page_source
                 and OBJECT_TEXT_2 in browser.page_source
             ):
-                log(log.INFO, "Text found in url: %s", site.url)
-                saved: Image = Image.query.filter_by(url=site.url).first()
+                log(log.INFO, "Text found in url: %s", url)
+                saved: Image = Image.query.filter_by(url=url).first()
                 if saved:
                     continue
-                Image(url=site.url).save()
-                log(log.INFO, "Site saved: %s", site.url)
-                foundings.append(site.url)
+                Image(url=url).save()
+                log(log.INFO, "Site saved: %s", url)
+                foundings.append(url)
                 continue
 
             results = browser.find_elements(By.TAG_NAME, "script")
